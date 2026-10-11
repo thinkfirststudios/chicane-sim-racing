@@ -19,7 +19,12 @@
     document.addEventListener("keydown", function (e) { if (e.key === "Escape" && nav.classList.contains("is-open")) { btn.click(); btn.focus(); } });
   }
   if (head) {
-    var onScroll = function () { head.classList.toggle("is-condensed", window.scrollY > 40); };
+    var bar = document.createElement("span"); bar.className = "progress"; bar.setAttribute("aria-hidden", "true"); head.appendChild(bar);
+    var onScroll = function () {
+      head.classList.toggle("is-condensed", window.scrollY > 40);
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.setProperty("--p", max > 0 ? Math.min(1, window.scrollY / max) : 0);
+    };
     window.addEventListener("scroll", onScroll, { passive: true }); onScroll();
   }
 
@@ -56,7 +61,12 @@
   });
 
   // Chequer-mask wipe: a 6-column grid of squares clears diagonally, 24ms stagger. Capped at three per page by markup.
+  document.querySelectorAll(".honour ol li, .spec li").forEach(function (li) {
+    li.style.setProperty("--n", Array.prototype.indexOf.call(li.parentNode.children, li));
+  });
+
   if (root.classList.contains("js-motion")) {
+    document.querySelectorAll(".sec-head").forEach(function (h) { h.classList.add("rv-line"); });
     document.querySelectorAll(".cq-wipe").forEach(function (el) {
       var h = el.getBoundingClientRect().height, w = el.getBoundingClientRect().width, rows = Math.max(3, Math.round(h / (w / 6)));
       var cover = document.createElement("div"); cover.className = "cq-cover"; cover.setAttribute("aria-hidden", "true");
@@ -77,7 +87,7 @@
         io.unobserve(en.target);
       });
     }, { rootMargin: "0px 0px -8% 0px", threshold: 0.12 });
-    document.querySelectorAll(".rv, .rows-in, .cq-wipe").forEach(function (el) { io.observe(el); });
+    document.querySelectorAll(".rv, .rows-in, .cq-wipe, .rv-line, .kit, .honour").forEach(function (el) { io.observe(el); });
   }
 
   // Forms — not wired. Red = error, white = valid. No other state colours.

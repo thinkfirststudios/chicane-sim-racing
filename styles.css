@@ -345,3 +345,92 @@ figure.ph figcaption span { background: rgba(0,0,0,.85); padding: 3px 7px; borde
 .band { z-index: 3; margin: 0; }
 .band { overflow: hidden; }
 @media (max-width: 899px) { .hero .btn--ghost { display: none; } .say { margin-bottom: 10px; } }
+
+/* ==========================================================================
+   v2 — gradients + motion (Alex, 2026-10-11)
+   Taken from their own room: red LED light lines framing the space. Same red
+   family only, flat gradients, no bloom/glow, no tilt, no scale on cards.
+   ========================================================================== */
+
+/* Hero: their real lounge, slow settle-in on load + layered scrim */
+.hero picture img { transform-origin: 60% 50%; }
+.js-motion .hero picture img { animation: settle-in 14s cubic-bezier(.2,.6,.2,1) both; }
+@keyframes settle-in { from { transform: scale(1.09); } to { transform: scale(1); } }
+.hero::before { background:
+  linear-gradient(0deg, var(--black) 0%, rgba(0,0,0,.55) 42%, rgba(0,0,0,.05) 75%),
+  linear-gradient(90deg, rgba(0,0,0,.78) 0%, rgba(0,0,0,.2) 55%, rgba(0,0,0,0) 80%); }
+.hero::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; z-index: 2;
+  background: linear-gradient(90deg, rgba(213,45,31,0), var(--red) 20%, var(--red) 80%, rgba(213,45,31,0)); }
+.js-motion .hero-inner > * { animation: rise-in 520ms var(--ease) both; }
+.js-motion .hero-inner > *:nth-child(2) { animation-delay: 90ms; }
+.js-motion .hero-inner > *:nth-child(3) { animation-delay: 180ms; }
+.js-motion .hero-inner > *:nth-child(4) { animation-delay: 270ms; }
+.js-motion .hero-inner > *:nth-child(5) { animation-delay: 360ms; }
+@keyframes rise-in { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+
+/* Scroll progress: a red light line under the header */
+.progress { position: absolute; left: 0; bottom: -1px; height: 3px; width: 100%; transform-origin: left; transform: scaleX(var(--p, 0));
+  background: linear-gradient(90deg, var(--red-deep), var(--red)); z-index: 2; }
+
+/* LED light line at the top of section heads — draws across on reveal */
+.sec-head, .page-head .wrap { position: relative; }
+.sec-head::before { content: ""; display: block; height: 2px; width: min(420px, 70%); margin-bottom: 26px; transform-origin: left;
+  background: linear-gradient(90deg, var(--red), rgba(213,45,31,.35) 70%, rgba(213,45,31,0)); transition: transform 600ms var(--ease); }
+.light .sec-head::before { background: linear-gradient(90deg, var(--red), rgba(213,45,31,0)); }
+.js-motion .sec-head:not(.is-in)::before { transform: scaleX(0); }
+
+/* Red ambient light behind the kit and the honour board — like the room, never a glow */
+.section--b2, .section--panel { background:
+  radial-gradient(70% 55% at 85% 0%, rgba(213,45,31,.16), rgba(213,45,31,0) 70%),
+  linear-gradient(180deg, var(--black), var(--black-2) 30%, var(--panel)); }
+.section--glow { background:
+  radial-gradient(60% 70% at 0% 100%, rgba(213,45,31,.14), rgba(213,45,31,0) 70%),
+  var(--black); }
+
+/* Cards: dark gradient fill; on hover a red light line slides in along the bottom */
+.card { position: relative; background: linear-gradient(160deg, #141414, #070707); overflow: hidden; }
+.card::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; transform: scaleX(0); transform-origin: left;
+  background: linear-gradient(90deg, var(--red-deep), var(--red)); transition: transform 260ms var(--ease); }
+.card:hover::after, a.card:focus-visible::after { transform: scaleX(1); }
+.exp .oval { transition: border-color 160ms linear, color 160ms linear; }
+a.card:hover .oval { border-color: var(--red); color: var(--white); }
+
+/* Buttons: red gradient fill + a single light sweep on hover */
+.btn--red { background: linear-gradient(160deg, #E8382A, var(--red) 45%, var(--red-deep)); position: relative; overflow: hidden; }
+.btn--red::after { content: ""; position: absolute; top: 0; bottom: 0; left: -60%; width: 40%; transform: skewX(0);
+  background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.28), rgba(255,255,255,0)); transition: left 520ms var(--ease); }
+.btn--red:hover::after { left: 120%; }
+.btn--red:hover { background: linear-gradient(160deg, var(--red), var(--red-deep)); }
+
+/* Chequer bands drift slowly, like a flag being waved — never behind text */
+.js-motion .cq-band { animation: flag 22s linear infinite; }
+@keyframes flag { to { background-position: calc(var(--sq) * 2 * 20) 0; } }
+
+/* Pricing: the one light panel gets a cold gradient; rows highlight on hover */
+.light { background: linear-gradient(180deg, #FFFFFF, var(--white-2) 40%, #EAEAEA); }
+.ptable tbody tr { transition: background-color 140ms linear; }
+.ptable tbody tr:hover { background: rgba(213,45,31,.07); }
+.dark-table tbody tr:hover { background: var(--red-wash); }
+
+/* Honour board: rank badges pop in one after another */
+.js-motion .honour ol li { opacity: 0; transform: translateX(-12px); transition: opacity 300ms var(--ease), transform 300ms var(--ease); transition-delay: calc(var(--n, 0) * 70ms + 200ms); }
+.js-motion .honour.is-in ol li { opacity: 1; transform: none; }
+
+/* Kit spec bullets draw in */
+.js-motion .spec li { opacity: 0; transform: translateX(-10px); transition: opacity 280ms var(--ease), transform 280ms var(--ease); transition-delay: calc(var(--n, 0) * 60ms + 150ms); }
+.js-motion .kit.is-in .spec li { opacity: 1; transform: none; }
+
+/* Photo band: red light from below */
+.photo figure.ph::after { background: linear-gradient(0deg, rgba(213,45,31,.35), rgba(0,0,0,0) 45%), linear-gradient(0deg, rgba(0,0,0,.5), rgba(0,0,0,0) 40%); }
+
+/* Footer: red ambient floor light */
+.site-foot { background: radial-gradient(80% 60% at 50% 100%, rgba(213,45,31,.14), rgba(213,45,31,0) 70%), var(--black); }
+
+/* Utility strip: red gradient */
+.utility { background: linear-gradient(90deg, var(--red-deep), var(--red) 40%, var(--red)); }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero picture img, .hero-inner > *, .cq-band { animation: none !important; }
+  .sec-head::before, .honour ol li, .spec li { transform: none !important; opacity: 1 !important; }
+}
+@media (max-width: 699px) { .hero picture img { object-position: 50% 70%; } }
