@@ -1,0 +1,29 @@
+# Netlify / Cloudflare Pages — only used if Chicane signs and the site migrates off WordPress/WooCommerce.
+
+# --- The three lorem-ipsum demo posts: 410 GONE, deliberately NOT redirected (pre-launch L3) ---
+# They should never have existed. A 301 would pass their signals onward and map placeholder Latin onto a real page.
+# Netlify has no native 410 in _redirects; serve 410 via an edge function or the host's equivalent. [410 MECHANISM — CONFIRM WITH HOST]
+# Then request removal in Search Console.
+#   /what-is-lorem-ipsum/      → 410
+#   /where-can-i-get-some/     → 410
+#   /where-does-it-come-from/  → 410
+
+# --- Preserve every real URL ---
+/our-story/            /our-story.html      200
+/experiences/          /experiences.html    200
+/racing/               /racing.html         200
+/food-drinks/          /experiences.html#food-drinks   301
+/parties-events/       /parties.html        200
+/compete/              /compete.html        200
+/racing-merchandise/   /merchandise.html    200
+/prices/               /prices.html         200
+/franchise/            /franchise.html      200
+/gallery/              /gallery.html        200
+/contact-us/           /visit.html          301
+# /academies/ keeps its URL but NONE of its current content (the third-party theme-park paragraph goes).
+# If Chicane confirms there is no academy: switch this line to  /academies/  /faq.html  301
+/academies/            /academy.html        200
+
+# [ORPHAN PAGE INVENTORY — ALEX TO CRAWL THE WORDPRESS INSTALL BEFORE MIGRATION]
+# Check for other WordPress demo content (sample page, "Hello world" post, default comment)
+# and preserve the franchise brochure PDF's real file URL. [BROCHURE PDF URL — CONFIRM]
