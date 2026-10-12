@@ -525,3 +525,81 @@ a.card.pick-tile { display: grid; align-content: start; }
   .hero2-photo { min-height: 26svh; }
   .hero2-photo .img-label { top: 8px; }
 }
+
+/* ==========================================================================
+   v4 — more red gradients (Alex, 2026-10-11). Red family only: #FF5143 → #D52D1F
+   → #A3140F → black. Flat colour stops, no bloom, no glow. Text on any red
+   surface is pure white (5.0:1 or better).
+   ========================================================================== */
+
+/* The rotating word: red gradient type */
+.rot span { background: linear-gradient(180deg, #FF5143 0%, var(--red) 55%, var(--red-deep) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+/* Hero text panel: a deeper red fall-off from the bottom-left */
+.hero2-text { background:
+  radial-gradient(110% 80% at 0% 100%, rgba(213,45,31,.42), rgba(163,20,15,.18) 45%, rgba(0,0,0,0) 75%),
+  linear-gradient(180deg, #120404, #000 70%); }
+
+/* Every dark section: red light rising from one side, alternating */
+.section:not(.light):not(.band) { background:
+  radial-gradient(70% 60% at 100% 100%, rgba(213,45,31,.20), rgba(213,45,31,0) 70%),
+  radial-gradient(50% 40% at 0% 0%, rgba(163,20,15,.16), rgba(163,20,15,0) 70%),
+  linear-gradient(180deg, #000, #0A0303); }
+.section:not(.light):not(.band):nth-of-type(even) { background:
+  radial-gradient(70% 60% at 0% 100%, rgba(213,45,31,.20), rgba(213,45,31,0) 70%),
+  radial-gradient(50% 40% at 100% 0%, rgba(163,20,15,.16), rgba(163,20,15,0) 70%),
+  linear-gradient(180deg, #0A0303, #000); }
+
+/* Red light line between sections */
+.section:not(.light) + .section:not(.light)::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px;
+  background: linear-gradient(90deg, rgba(213,45,31,0), var(--red) 50%, rgba(213,45,31,0)); }
+
+/* Parties: a full red-gradient section */
+section[aria-labelledby="party-h"] { background:
+  radial-gradient(60% 80% at 100% 0%, rgba(255,81,67,.35), rgba(255,81,67,0) 60%),
+  linear-gradient(150deg, var(--red) 0%, #B81A12 45%, var(--red-deep) 75%, #4A0806 100%) !important; color: var(--white); }
+section[aria-labelledby="party-h"] .lede, section[aria-labelledby="party-h"] p, section[aria-labelledby="party-h"] .label { color: var(--white); }
+section[aria-labelledby="party-h"] .flag { color: var(--white); border-color: rgba(255,255,255,.65); }
+section[aria-labelledby="party-h"] .cq-rule { background: conic-gradient(var(--white) 25%, transparent 0 50%, var(--white) 0 75%, transparent 0) 0 0 / 12px 12px; }
+section[aria-labelledby="party-h"] .oval { border-color: var(--white); }
+section[aria-labelledby="party-h"] .sec-head::before, section[aria-labelledby="party-h"] .wrap > div > .eyebrow { filter: none; }
+
+/* Sub-page heads: deep red to black */
+.page-head { background:
+  radial-gradient(80% 120% at 100% 0%, rgba(213,45,31,.45), rgba(213,45,31,0) 60%),
+  linear-gradient(180deg, #1A0503, #000); }
+
+/* Cards: red gradient edge along the top, red wash at the foot */
+.card { background:
+  linear-gradient(180deg, rgba(0,0,0,0) 55%, rgba(213,45,31,.10)),
+  linear-gradient(160deg, #161010, #060303); border-top: 2px solid transparent; border-image: linear-gradient(90deg, var(--red), rgba(213,45,31,.15)) 1; border-image-slice: 1; }
+.card:hover { background:
+  linear-gradient(180deg, rgba(213,45,31,.06), rgba(213,45,31,.22)),
+  linear-gradient(160deg, #1A0E0E, #080303); }
+.light .card { border-image: none; }
+
+/* Price tables: red gradient header row */
+.ptable thead th { background: linear-gradient(90deg, var(--red-deep), var(--red)); color: var(--white); border-bottom-color: var(--black); }
+.dark-table thead th { background: linear-gradient(90deg, var(--red-deep), var(--red)); color: var(--white); }
+
+/* Honour board: red gradient top row and head */
+.honour-head { background: linear-gradient(90deg, rgba(213,45,31,.35), rgba(213,45,31,0)); }
+.honour li:first-child { background: linear-gradient(90deg, rgba(213,45,31,.45), rgba(213,45,31,.05)); }
+
+/* Ticker: red gradient band */
+.ticker { background: linear-gradient(90deg, var(--red-deep), var(--red) 30%, var(--red) 70%, var(--red-deep)); color: var(--white); border-bottom-color: var(--black); }
+.ticker li::after { background: conic-gradient(var(--white) 25%, var(--black) 0 50%, var(--white) 0 75%, var(--black) 0) 0 0 / 14px 14px; outline-color: var(--white); }
+
+/* Ghost buttons fill with a red gradient on hover */
+.btn--ghost:hover { background: linear-gradient(160deg, var(--red), var(--red-deep)); border-color: var(--red); color: var(--white); }
+
+/* Kit "10": red gradient numeral */
+.kit .ten { background: linear-gradient(180deg, #FFFFFF 0%, #FFFFFF 45%, var(--red) 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.kit .ten small { -webkit-text-fill-color: var(--muted); }
+
+/* Footer: red rising from the floor */
+.site-foot { background: radial-gradient(90% 70% at 50% 100%, rgba(213,45,31,.32), rgba(213,45,31,0) 70%), linear-gradient(180deg, #000, #0F0302); }
+
+/* Header: faint red under-light */
+.site-head { background: linear-gradient(180deg, rgba(0,0,0,.96), rgba(26,5,3,.96)); }
+section[aria-labelledby="party-h"] .ptable caption .sub { color: var(--white); }
